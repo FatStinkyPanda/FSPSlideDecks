@@ -1,5 +1,4 @@
 from pptx import Presentation
-from pptx.util import Inches, Pt
 from pathlib import Path
 from .deck_manager import get_deck_path
 
