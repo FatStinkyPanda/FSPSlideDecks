@@ -34,13 +34,13 @@ def validate_pptx(file_path: Path) -> dict:
             # 1. Title Check
             if not slide.shapes.title or not slide.shapes.title.text.strip():
                 results["issues"].append(f"Slide {i+1}: Missing or empty title.")
-            
+
             # 2. Structural: Placeholder Usage
             for shape in slide.placeholders:
                 if not shape.has_text_frame or not shape.text.strip():
                     if shape.placeholder_format.type not in [7, 8]: # Ignore pictures/other types
                         results["issues"].append(f"Slide {i+1}: Placeholder '{shape.name}' is empty.")
-            
+
             # 3. Visual: Font and Color Consistency
             for shape in slide.shapes:
                 if shape.has_text_frame:
