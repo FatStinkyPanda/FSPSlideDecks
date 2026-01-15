@@ -2,7 +2,7 @@ from typing import Dict, List
 import json
 
 from .deck_manager import initialize_deck_dir, list_decks, get_deck_path
-from .generator import create_enhanced_deck
+from .generator import create_enhanced_deck, add_image_slide
 from .validator import validate_pptx
 
 class SlideDeckMCPTools:
@@ -44,6 +44,17 @@ class SlideDeckMCPTools:
             output_file = deck_path / "output" / f"{deck_name}.pptx"
             results = validate_pptx(output_file)
             return json.dumps(results, indent=2)
+        except Exception as e:
+            return f"Error: {str(e)}"
+
+    @staticmethod
+    def add_image_to_deck(deck_name: str, title: str, image_filename: str) -> str:
+        """
+        Adds a slide with an image from the assets folder to the deck.
+        """
+        try:
+            output_file = add_image_slide(deck_name, title, image_filename)
+            return f"Success: Image slide added to {output_file}"
         except Exception as e:
             return f"Error: {str(e)}"
 
