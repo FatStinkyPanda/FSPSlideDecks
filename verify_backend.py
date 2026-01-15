@@ -31,18 +31,27 @@ def test_workflow():
             "title": "Alternate Layout Test",
             "layout": 2, # Common Title and Content layout
             "content": "Testing layout index 2 as a valid fallback."
+        },
+        {
+            "title": "Data Support: Tables",
+            "table_data": [
+                ["Feature", "Status", "Priority"],
+                ["Tables", "Implemented", "High"],
+                ["Charts", "Planned", "Medium"],
+                ["Layouts", "Enhanced", "High"]
+            ]
         }
     ]
-
-    print("2. Generating Enhanced PPTX file...")
+    
+    print("2. Generating Enhanced PPTX file (with Tables)...")
     output_file = create_enhanced_deck(deck_name, slides)
     print(f"   Success: File generated at {output_file}")
-
+    
     print("3. Running validation...")
     results = validate_pptx(output_file)
     print(f"   Validation Results: {results}")
-
-    if results['valid'] and results['slide_count'] == 3:
+    
+    if results['valid'] and results['slide_count'] == 4:
         print("--- Verification Successful ---")
     else:
         print(f"--- Verification Failed (Slide Count: {results['slide_count']}) ---")
