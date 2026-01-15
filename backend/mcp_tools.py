@@ -1,8 +1,8 @@
+from typing import Dict, List
 import json
-from pathlib import Path
-from typing import Dict, List, Optional
+
 from .deck_manager import initialize_deck_dir, list_decks, get_deck_path
-from .generator import create_basic_deck
+from .generator import create_enhanced_deck
 from .validator import validate_pptx
 
 class SlideDeckMCPTools:
@@ -29,7 +29,7 @@ class SlideDeckMCPTools:
         'slides' should be a list of {'title': '...', 'content': '...'}.
         """
         try:
-            output_file = create_basic_deck(deck_name, slides)
+            output_file = create_enhanced_deck(deck_name, slides)
             return f"Success: Slide deck generated at {output_file}"
         except Exception as e:
             return f"Error: {str(e)}"

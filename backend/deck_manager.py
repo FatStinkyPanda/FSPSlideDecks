@@ -1,21 +1,21 @@
-import shutil
-import json
 from pathlib import Path
+import json
+import shutil
 
 DECKS_DIR = Path(__file__).parent.parent / "decks"
 
 def initialize_deck_dir(deck_name: str, metadata: dict = None) -> Path:
     """Creates a new isolated project folder for a slide deck."""
     deck_path = DECKS_DIR / deck_name
-    
+
     if deck_path.exists():
         raise FileExistsError(f"Deck '{deck_name}' already exists at {deck_path}")
-    
+
     # Create structure
     deck_path.mkdir(parents=True)
     (deck_path / "assets").mkdir()
     (deck_path / "output").mkdir()
-    
+
     # Initialize config
     config = {
         "name": deck_name,
@@ -23,10 +23,10 @@ def initialize_deck_dir(deck_name: str, metadata: dict = None) -> Path:
         "created_at": None, # Should add timestamp logic
         "metadata": metadata or {}
     }
-    
+
     with open(deck_path / "config.json", "w") as f:
         json.dump(config, f, indent=4)
-        
+
     return deck_path
 
 def list_decks() -> list:
