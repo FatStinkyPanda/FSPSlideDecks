@@ -33,6 +33,17 @@ def test_workflow():
             "content": "Testing layout index 2 as a valid fallback."
         },
         {
+            "title": "Visual Data: Charts",
+            "chart_data": {
+                "type": "COLUMN_CLUSTERED",
+                "categories": ["Q1", "Q2", "Q3", "Q4"],
+                "series": {
+                    "Project A": [10, 25, 15, 30],
+                    "Project B": [5, 15, 20, 25]
+                }
+            }
+        },
+        {
             "title": "Data Support: Tables",
             "table_data": [
                 ["Feature", "Status", "Priority"],
@@ -42,16 +53,16 @@ def test_workflow():
             ]
         }
     ]
-    
+
     print("2. Generating Enhanced PPTX file (with Tables)...")
     output_file = create_enhanced_deck(deck_name, slides)
     print(f"   Success: File generated at {output_file}")
-    
+
     print("3. Running validation...")
     results = validate_pptx(output_file)
     print(f"   Validation Results: {results}")
-    
-    if results['valid'] and results['slide_count'] == 4:
+
+    if results['valid'] and results['slide_count'] == 5:
         print("--- Verification Successful ---")
     else:
         print(f"--- Verification Failed (Slide Count: {results['slide_count']}) ---")

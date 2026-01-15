@@ -2,6 +2,8 @@ from pathlib import Path
 
 from .deck_manager import get_deck_path
 from pptx import Presentation
+from pptx.chart.data import CategoryChartData
+from pptx.enum.chart import XL_CHART_TYPE
 from pptx.util import Inches
 
 def create_enhanced_deck(deck_name: str, slides_content: list) -> Path:
@@ -25,30 +27,42 @@ def create_enhanced_deck(deck_name: str, slides_content: list) -> Path:
         layout_idx = slide_data.get('layout', 1)
         if layout_idx >= len(prs.slide_layouts):
             layout_idx = 1 # fallback
-            
+
         slide_layout = prs.slide_layouts[layout_idx]
         slide = prs.slides.add_slide(slide_layout)
-        
+
         # Handle Title
         if slide.shapes.title:
             slide.shapes.title.text = slide_data.get('title', 'Untitled Slide')
+
+        # Handle Charts
+        if 'chart_data' in slide_data:
+            c_data = slide_data['chart_data']
+            chart_data = CategoryChartData()
+            chart_data.categories = c_data.get('categories', [])
+            for series_name, values in c_data.get('series', {}).items():
+                chart_data.add_series(series_name, values)
+            
+            x, y, cx, cy = Inches(0.5), Inches(1.5), Inches(9), Inches(5)
+            chart_type = getattr(XL_CHART_TYPE, c_data.get('type', 'COLUMN_CLUSTERED'))
+            slide.shapes.add_chart(chart_type, x, y, cx, cy, chart_data)
         
         # Handle Tables
-        if 'table_data' in slide_data:
+        elif 'table_data' in slide_data:
             data = slide_data['table_data']
             rows, cols = len(data), len(data[0])
             left, top, width, height = Inches(0.5), Inches(1.5), Inches(9), Inches(5)
             table = slide.shapes.add_table(rows, cols, left, top, width, height).table
-            
+
             for r in range(rows):
                 for c in range(cols):
                     table.cell(r, c).text = str(data[r][c])
-        
+
         # Handle Content / Body (if not a table)
         elif len(slide.placeholders) > 1:
             body_shape = slide.placeholders[1]
             tf = body_shape.text_frame
-            
+
             # Simple content text or bullet points
             if 'bullet_points' in slide_data:
                 tf.text = slide_data['bullet_points'][0]
