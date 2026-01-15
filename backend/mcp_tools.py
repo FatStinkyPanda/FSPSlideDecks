@@ -3,6 +3,7 @@ import json
 
 from .deck_manager import initialize_deck_dir, list_decks, get_deck_path, clone_deck
 from .generator import create_enhanced_deck, add_image_slide, add_slide_to_deck, delete_slide_from_deck
+from .distributor import package_assets, export_to_pdf
 from .validator import validate_pptx
 
 class SlideDeckMCPTools:
@@ -89,6 +90,29 @@ class SlideDeckMCPTools:
         try:
             output_file = delete_slide_from_deck(deck_name, index)
             return f"Success: Slide {index} removed from {output_file}"
+        except Exception as e:
+            return f"Error: {str(e)}"
+
+    @staticmethod
+    def distribute_deck(deck_name: str, destination_dir: str) -> str:
+        """
+        Packages the deck and its assets for distribution.
+        """
+        try:
+            dest_path = Path(destination_dir)
+            dist_path = package_assets(deck_name, dest_path)
+            return f"Success: Deck packaged at {dist_path}"
+        except Exception as e:
+            return f"Error: {str(e)}"
+
+    @staticmethod
+    def export_pdf(deck_name: str) -> str:
+        """
+        Exports the deck to a PDF format.
+        """
+        try:
+            pdf_path = export_to_pdf(deck_name)
+            return f"Success: PDF exported to {pdf_path}"
         except Exception as e:
             return f"Error: {str(e)}"
 
