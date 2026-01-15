@@ -1,7 +1,7 @@
 from typing import Dict, List
 import json
 
-from .deck_manager import initialize_deck_dir, list_decks, get_deck_path
+from .deck_manager import initialize_deck_dir, list_decks, get_deck_path, clone_deck
 from .generator import create_enhanced_deck, add_image_slide
 from .validator import validate_pptx
 
@@ -19,6 +19,17 @@ class SlideDeckMCPTools:
         try:
             path = initialize_deck_dir(deck_name, {"purpose": purpose})
             return f"Success: Deck '{deck_name}' initialized at {path}"
+        except Exception as e:
+            return f"Error: {str(e)}"
+
+    @staticmethod
+    def clone_existing_deck(source_deck: str, target_deck: str) -> str:
+        """
+        Clones an existing deck to a new one, including all assets.
+        """
+        try:
+            path = clone_deck(source_deck, target_deck)
+            return f"Success: Deck '{source_deck}' cloned to '{target_deck}' at {path}"
         except Exception as e:
             return f"Error: {str(e)}"
 

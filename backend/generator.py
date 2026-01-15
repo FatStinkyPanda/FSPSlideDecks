@@ -42,11 +42,11 @@ def create_enhanced_deck(deck_name: str, slides_content: list) -> Path:
             chart_data.categories = c_data.get('categories', [])
             for series_name, values in c_data.get('series', {}).items():
                 chart_data.add_series(series_name, values)
-            
+
             x, y, cx, cy = Inches(0.5), Inches(1.5), Inches(9), Inches(5)
             chart_type = getattr(XL_CHART_TYPE, c_data.get('type', 'COLUMN_CLUSTERED'))
             slide.shapes.add_chart(chart_type, x, y, cx, cy, chart_data)
-        
+
         # Handle Tables
         elif 'table_data' in slide_data:
             data = slide_data['table_data']
