@@ -2,7 +2,7 @@ from typing import Dict, List
 import json
 
 from .deck_manager import initialize_deck_dir, list_decks, get_deck_path, clone_deck
-from .generator import create_enhanced_deck, add_image_slide
+from .generator import create_enhanced_deck, add_image_slide, add_slide_to_deck, delete_slide_from_deck
 from .validator import validate_pptx
 
 class SlideDeckMCPTools:
@@ -66,6 +66,29 @@ class SlideDeckMCPTools:
         try:
             output_file = add_image_slide(deck_name, title, image_filename)
             return f"Success: Image slide added to {output_file}"
+        except Exception as e:
+            return f"Error: {str(e)}"
+
+    @staticmethod
+    def append_slide(deck_name: str, title: str, content: str = "", layout: int = 1) -> str:
+        """
+        Appends a single slide to the deck.
+        """
+        try:
+            slide_data = {"title": title, "content": content, "layout": layout}
+            output_file = add_slide_to_deck(deck_name, slide_data)
+            return f"Success: Slide added to {output_file}"
+        except Exception as e:
+            return f"Error: {str(e)}"
+
+    @staticmethod
+    def remove_slide(deck_name: str, index: int) -> str:
+        """
+        Removes a slide from the deck by its index.
+        """
+        try:
+            output_file = delete_slide_from_deck(deck_name, index)
+            return f"Success: Slide {index} removed from {output_file}"
         except Exception as e:
             return f"Error: {str(e)}"
 

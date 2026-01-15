@@ -77,6 +77,50 @@ def create_enhanced_deck(deck_name: str, slides_content: list) -> Path:
     prs.save(output_file)
     return output_file
 
+def add_slide_to_deck(deck_name: str, slide_data: dict) -> Path:
+    """Adds a single slide to an existing presentation."""
+    deck_path = get_deck_path(deck_name)
+    output_file = deck_path / "output" / f"{deck_name}.pptx"
+    
+    if output_file.exists():
+        prs = Presentation(output_file)
+    else:
+        prs = Presentation()
+        
+    layout_idx = slide_data.get('layout', 1)
+    slide_layout = prs.slide_layouts[layout_idx]
+    slide = prs.slides.add_slide(slide_layout)
+    
+    # Reuse logic for title/content (Simplified for this snippet)
+    if slide.shapes.title:
+        slide.shapes.title.text = slide_data.get('title', 'New Slide')
+    if len(slide.placeholders) > 1:
+        slide.placeholders[1].text = slide_data.get('content', '')
+        
+    prs.save(output_file)
+    return output_file
+
+def delete_slide_from_deck(deck_name: str, slide_index: int) -> Path:
+    """Removes a slide from an existing presentation by index."""
+    deck_path = get_deck_path(deck_name)
+    output_file = deck_path / "output" / f"{deck_name}.pptx"
+    
+    if not output_file.exists():
+        raise FileNotFoundError(f"Deck file '{output_file}' not found.")
+        
+    prs = Presentation(output_file)
+    
+    # Internal logic for slide deletion in python-pptx
+    xml_slides = prs.slides._sldIdLst
+    slides = list(xml_slides)
+    if 0 <= slide_index < len(slides):
+        xml_slides.remove(slides[slide_index])
+    else:
+        raise IndexError(f"Slide index {slide_index} out of range (0-{len(slides)-1})")
+        
+    prs.save(output_file)
+    return output_file
+
 def add_image_slide(deck_name: str, title_text: str, image_filename: str) -> Path:
     """
     Adds a slide with an image from the assets folder to an existing deck.
