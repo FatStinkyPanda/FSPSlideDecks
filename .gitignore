@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+decks/
+.agent/
+.gemini/
+.claude/
+.mcp/
+mcp-global/
