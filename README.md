@@ -1,7 +1,7 @@
 # FSPSlideDecks - Automated Slide Deck Engineering Platform
 
 ## 🎯 Global Vision
-FSPSlideDecks is a powerful Python-based backend designed for the automated, intelligent creation of professional slide decks of **any size or complexity**. It provides AI agents with a robust suite of tools for generating, validating, and ensuring the quality of presentations across diverse domains.
+FSPSlideDecks ([github.com/FatStinkyPanda/FSPSlideDecks](https://github.com/FatStinkyPanda/FSPSlideDecks)) is a powerful Python-based backend designed for the automated, intelligent creation of professional slide decks of **any size or complexity**. It provides AI agents with a robust suite of tools for generating, validating, and ensuring the quality of presentations across diverse domains.
 
 ## 🛠 Project Lifecycle Requirements
 This project enforces strict development standards to ensure stability and compatibility.
